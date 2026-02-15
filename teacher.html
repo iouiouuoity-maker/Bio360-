@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Bio360 • Мұғалім</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap bar">
+    <div class="brand">
+      <div class="logo">B360</div>
+      <div>
+        <h1>Мұғалім панелі</h1>
+        <p class="sub">Нәтижелерді қарау • Сүзгі • CSV экспорт</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="pill" href="index.html">Басты бет</a>
+      <a class="pill" href="teacher.html">Мұғалім</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="panel">
+    <div class="grid2">
+      <div class="card">
+        <h3>Сүзгі</h3>
+        <label class="lbl">Сынып</label>
+        <select id="fClass" class="input">
+          <option value="">Барлығы</option>
+          <option value="5">5</option><option value="6">6</option><option value="7">7</option>
+          <option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option>
+        </select>
+
+        <label class="lbl">Тақырып</label>
+        <select id="fTopic" class="input">
+          <option value="">Барлығы</option>
+        </select>
+
+        <label class="lbl">Деңгей</label>
+        <select id="fLevel" class="input">
+          <option value="">Барлығы</option>
+          <option value="L1">L1 (Негіз)</option>
+          <option value="L2">L2 (Орта)</option>
+          <option value="L3">L3 (Терең)</option>
+        </select>
+
+        <div class="row">
+          <button id="applyFilter" class="btn">Қолдану</button>
+          <button id="exportCsv" class="btn ghost">CSV экспорт</button>
+        </div>
+
+        <p class="muted small">Ескерту: Бұл панель де localStorage дерегін оқиды.</p>
+      </div>
+
+      <div class="card">
+        <h3>Жалпы статистика</h3>
+        <div id="stats" class="stats"></div>
+        <button id="clearAll" class="btn danger">Барлығын тазарту</button>
+      </div>
+    </div>
+
+    <h3>Нәтижелер</h3>
+    <div id="list" class="list"></div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap foot">
+    <span>Bio360</span>
+    <span class="muted">Teacher</span>
+  </div>
+</footer>
+
+<script src="assets/teacher.js"></script>
+</body>
+</html>
