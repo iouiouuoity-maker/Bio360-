@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Bio360 • AI + Scenario + Data</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap bar">
+    <div class="brand">
+      <div class="logo">B360</div>
+      <div>
+        <h1>Bio360</h1>
+        <p class="sub">AI + Scenario + Data • 5–11 сыныпқа бейімделетін биология</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="pill" href="index.html">Басты бет</a>
+      <a class="pill" href="teacher.html">Мұғалім</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="hero-text">
+      <h2>Сыныпқа емес — <span class="accent">ойлау деңгейіне</span> қарай оқыту</h2>
+      <p>
+        Оқушы қысқа диагностикадан өтеді → жүйе деңгейді анықтайды →
+        сценарийлік тапсырма береді → нақты деректермен талдау жасатады → нәтиже сақталады.
+      </p>
+
+      <div class="grid2">
+        <div class="card">
+          <h3>1) Диагностика (AI-бағдар)</h3>
+          <p>Тақырып бойынша 8 сұрақ. Нәтижеге қарай: Негіз (L1) / Орта (L2) / Терең (L3).</p>
+        </div>
+        <div class="card">
+          <h3>2) Scenario</h3>
+          <p>Реал өмір жағдайы. Әр деңгейге сәйкес әрекет пен дәлел талап етіледі.</p>
+        </div>
+        <div class="card">
+          <h3>3) Data</h3>
+          <p>Қазақстан/әлемдік стильде нақты дерек кестесі + шағын график + қорытынды.</p>
+        </div>
+        <div class="card">
+          <h3>4) Нәтиже</h3>
+          <p>Жауаптар сақталады. Мұғалім бетінде сүзгі, қарау, CSV экспорт бар.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-panel">
+      <h3>Бастау</h3>
+
+      <label class="lbl">Оқушы аты-жөні</label>
+      <input id="studentName" class="input" placeholder="Мысалы: Аружан Н."/>
+
+      <label class="lbl">Сыныбы</label>
+      <select id="studentClass" class="input">
+        <option value="5">5</option><option value="6">6</option><option value="7">7</option>
+        <option value="8">8</option><option value="9">9</option><option value="10">10</option>
+        <option value="11">11</option>
+      </select>
+
+      <label class="lbl">Тақырып</label>
+      <select id="topicSelect" class="input"></select>
+
+      <button id="startBtn" class="btn">Диагностикаға өту</button>
+
+      <p class="muted small">
+        Ескерту: Нәтижелер браузердің өзінде (localStorage) сақталады.
+        Бір мектеп компьютерінде жұмыс істесе — өте ыңғайлы.
+      </p>
+    </div>
+  </section>
+
+  <section class="note">
+    <h3>AI-көмекші қосу (міндетті емес)</h3>
+    <p class="muted">
+      Егер Elfsight / басқа AI чатботың болса, <b>learn.html</b> ішіндегі “AI Assistant” бөліміне скриптті қоясың.
+    </p>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap foot">
+    <span>Bio360 • Adaptive Biology</span>
+    <span class="muted">GitHub Pages-ке дайын</span>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
