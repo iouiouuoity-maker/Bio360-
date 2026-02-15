@@ -93,3 +93,11 @@ td{color:var(--muted)}
 .item h4{margin:0 0 6px}
 .item .meta{color:var(--muted);font-size:12px;margin-bottom:8px}
 .stats{display:grid;gap:8px;color:var(--muted)}
+/* BioPassport extras */
+.meter{display:grid;gap:10px;margin-top:10px}
+.mrow{display:grid;grid-template-columns:90px 1fr 34px;gap:10px;align-items:center;color:var(--muted);font-size:13px}
+.bar{height:10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);overflow:hidden}
+.fill{height:100%;width:0%;background:rgba(124,247,194,.55)}
+.badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.bdg{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(122,168,255,.10);color:var(--text);font-size:13px}
+.bdg strong{margin-right:6px}
