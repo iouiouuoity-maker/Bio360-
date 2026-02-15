@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Bio360 • BioPassport</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap bar">
+    <div class="brand">
+      <div class="logo">B360</div>
+      <div>
+        <h1>BioPassport</h1>
+        <p class="sub">Оқушының прогресс профилі • бейдждер</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="pill" href="index.html">Басты бет</a>
+      <a class="pill" href="learn.html">Сабақ</a>
+      <a class="pill" href="teacher.html">Мұғалім</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2 id="pName">—</h2>
+        <p class="muted" id="pMeta">—</p>
+      </div>
+      <div class="badge" id="pLevel">—</div>
+    </div>
+
+    <div class="grid2" style="margin-top:12px">
+      <div class="card">
+        <h3>Дағды профилі (0–100)</h3>
+        <div class="meter">
+          <div class="mrow"><span>Түсіну</span><div class="bar"><div id="mUnderstand" class="fill"></div></div><b id="tUnderstand">0</b></div>
+          <div class="mrow"><span>Қолдану</span><div class="bar"><div id="mApply" class="fill"></div></div><b id="tApply">0</b></div>
+          <div class="mrow"><span>Талдау</span><div class="bar"><div id="mAnalyze" class="fill"></div></div><b id="tAnalyze">0</b></div>
+          <div class="mrow"><span>Data</span><div class="bar"><div id="mData" class="fill"></div></div><b id="tData">0</b></div>
+          <div class="mrow"><span>Дәлел</span><div class="bar"><div id="mEvidence" class="fill"></div></div><b id="tEvidence">0</b></div>
+        </div>
+        <p class="muted small" id="nextStep" style="margin-top:10px"></p>
+      </div>
+
+      <div class="card">
+        <h3>Бейдждер</h3>
+        <div id="badges" class="badges"></div>
+        <p class="muted small" style="margin-top:10px">
+          Бейдждер автомат беріледі: сценарий таңдауы, дәлел, data қорытындысы, деңгей.
+        </p>
+      </div>
+    </div>
+
+    <hr class="hr"/>
+
+    <div class="card">
+      <h3>Соңғы нәтиже қысқаша</h3>
+      <div id="lastSummary" class="muted"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap foot">
+    <span>Bio360</span>
+    <span class="muted">BioPassport</span>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
