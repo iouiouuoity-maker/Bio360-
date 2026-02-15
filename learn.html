@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Bio360 • Сабақ</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap bar">
+    <div class="brand">
+      <div class="logo">B360</div>
+      <div>
+        <h1>Bio360</h1>
+        <p class="sub" id="hdrInfo">Сабақ</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="pill" href="index.html">Басты бет</a>
+      <a class="pill" href="teacher.html">Мұғалім</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2 id="topicTitle">Тақырып</h2>
+        <p class="muted" id="topicDesc"></p>
+      </div>
+      <div class="badge" id="levelBadge">L?</div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="diag">1) Диагностика</button>
+      <button class="tab" data-tab="scenario">2) Scenario</button>
+      <button class="tab" data-tab="data">3) Data</button>
+      <button class="tab" data-tab="submit">4) Жіберу</button>
+    </div>
+
+    <!-- Диагностика -->
+    <section class="tabpage show" id="tab-diag">
+      <h3>Диагностика сұрақтары</h3>
+      <p class="muted">Жауап бер → «Бағалау» бас → деңгей анықталады.</p>
+      <div id="quizBox" class="quiz"></div>
+      <div class="row">
+        <button id="gradeBtn" class="btn">Бағалау</button>
+        <div class="result" id="quizResult"></div>
+      </div>
+    </section>
+
+    <!-- Scenario -->
+    <section class="tabpage" id="tab-scenario">
+      <h3>Сценарийлік тапсырма</h3>
+      <div id="scenarioBox" class="card"></div>
+
+      <label class="lbl">Жауап (қысқа әрі дәлелмен)</label>
+      <textarea id="scenarioAnswer" class="textarea" placeholder="Мысалы: Себебі..., дәлел..., қорытынды..."></textarea>
+
+      <div class="hint" id="scenarioHint"></div>
+    </section>
+
+    <!-- Data -->
+    <section class="tabpage" id="tab-data">
+      <h3>Дерекпен жұмыс (Data)</h3>
+      <p class="muted">Кестені қарап, 2 сұраққа жауап бер. Төменде график автоматты салынады.</p>
+
+      <div class="grid2">
+        <div class="card">
+          <h4>Дерек кестесі</h4>
+          <div id="dataTable" class="tableWrap"></div>
+        </div>
+        <div class="card">
+          <h4>График</h4>
+          <canvas id="chart" width="520" height="300" class="canvas"></canvas>
+          <p class="muted small">Қарапайым сызықтық график (кітапханасыз).</p>
+        </div>
+      </div>
+
+      <label class="lbl">1) Дерек нені көрсетеді? (1–2 сөйлем)</label>
+      <textarea id="dataQ1" class="textarea" placeholder="..."></textarea>
+
+      <label class="lbl">2) Бір шешім ұсын (нақты)</label>
+      <textarea id="dataQ2" class="textarea" placeholder="..."></textarea>
+    </section>
+
+    <!-- Submit -->
+    <section class="tabpage" id="tab-submit">
+      <h3>Нәтижені сақтау</h3>
+      <p class="muted">Барлығы дайын болса, «Сақтау» бас. Мұғалім бетінде көрінеді.</p>
+
+      <div class="card">
+        <div class="kv">
+          <div><span class="muted">Оқушы:</span> <b id="sumName">—</b></div>
+          <div><span class="muted">Сынып:</span> <b id="sumClass">—</b></div>
+          <div><span class="muted">Тақырып:</span> <b id="sumTopic">—</b></div>
+          <div><span class="muted">Деңгей:</span> <b id="sumLevel">—</b></div>
+          <div><span class="muted">Диагн. балл:</span> <b id="sumScore">—</b></div>
+        </div>
+      </div>
+
+      <button id="saveBtn" class="btn">Сақтау</button>
+      <div class="result" id="saveResult"></div>
+
+      <hr class="hr"/>
+
+      <h3>AI Assistant (қалауынша)</h3>
+      <p class="muted">
+        Төменге өзіңнің Elfsight AI Chatbot кодыңды қоя сал (болмаса бос қалдыр).
+      </p>
+
+      <!-- AI BOT PLACEHOLDER -->
+      <!-- Мына жерге Elfsight/басқа бот скриптін қоясың -->
+      <!--
+      <script src="https://elfsightcdn.com/platform.js" async></script>
+      <div class="elfsight-app-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" data-elfsight-app-lazy></div>
+      -->
+    </section>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap foot">
+    <span id="footInfo">Bio360</span>
+    <span class="muted">Оқушы панелі</span>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
