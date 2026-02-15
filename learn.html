@@ -2,135 +2,137 @@
 <html lang="kk">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Bio360 • Сабақ</title>
   <link rel="stylesheet" href="assets/style.css"/>
 </head>
 <body>
+
 <header class="topbar">
   <div class="wrap bar">
     <div class="brand">
       <div class="logo">B360</div>
       <div>
         <h1>Bio360</h1>
-        <p class="sub" id="hdrInfo">Сабақ</p>
+        <p class="sub">AI + Scenario + Data моделі</p>
       </div>
     </div>
     <nav class="nav">
       <a class="pill" href="index.html">Басты бет</a>
+      <a class="pill" href="passport.html">BioPassport</a>
       <a class="pill" href="teacher.html">Мұғалім</a>
     </nav>
   </div>
 </header>
 
 <main class="wrap">
-  <section class="panel">
-    <div class="panel-head">
-      <div>
-        <h2 id="topicTitle">Тақырып</h2>
-        <p class="muted" id="topicDesc"></p>
-      </div>
-      <div class="badge" id="levelBadge">L?</div>
+
+<!-- ===================== 1. Диагностика ===================== -->
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <h2>1. Диагностика</h2>
+      <p class="muted">
+        Қысқа тест арқылы сенің бастапқы деңгейің анықталады.
+      </p>
     </div>
+  </div>
 
-    <div class="tabs">
-      <button class="tab active" data-tab="diag">1) Диагностика</button>
-      <button class="tab" data-tab="scenario">2) Scenario</button>
-      <button class="tab" data-tab="data">3) Data</button>
-      <button class="tab" data-tab="submit">4) Жіберу</button>
+  <div id="quizBox" class="quiz"></div>
+
+  <div class="row">
+    <button id="gradeBtn" class="btn">Бағалау</button>
+    <div id="quizResult" class="result"></div>
+  </div>
+</section>
+
+<!-- ===================== 2. Decision Story ===================== -->
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <h2>2. Decision Story</h2>
+      <p class="muted">
+        Шешім қабылда және оның ғылыми салдарын көр.
+      </p>
     </div>
+  </div>
 
-    <!-- Диагностика -->
-    <section class="tabpage show" id="tab-diag">
-      <h3>Диагностика сұрақтары</h3>
-      <p class="muted">Жауап бер → «Бағалау» бас → деңгей анықталады.</p>
-      <div id="quizBox" class="quiz"></div>
-      <div class="row">
-        <button id="gradeBtn" class="btn">Бағалау</button>
-        <div class="result" id="quizResult"></div>
-      </div>
-    </section>
+  <div id="scenarioBox" class="card"></div>
 
-    <!-- Scenario -->
-    <section class="tabpage" id="tab-scenario">
-      <h3>Сценарийлік тапсырма</h3>
-      <div id="scenarioBox" class="card"></div>
+  <label class="lbl">Ғылыми жауап:</label>
+  <textarea id="scenarioAnswer" class="textarea"
+    placeholder="Себебі..., дәлел..., қорытынды..."></textarea>
+</section>
 
-      <label class="lbl">Жауап (қысқа әрі дәлелмен)</label>
-      <textarea id="scenarioAnswer" class="textarea" placeholder="Мысалы: Себебі..., дәлел..., қорытынды..."></textarea>
+<!-- ===================== 3. Data талдау ===================== -->
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <h2>3. Data талдау</h2>
+      <p class="muted">
+        Кестені және графикті талдап, ғылыми қорытынды жаса.
+      </p>
+    </div>
+  </div>
 
-      <div class="hint" id="scenarioHint"></div>
-    </section>
+  <div id="dataTable" class="tableWrap"></div>
 
-    <!-- Data -->
-    <section class="tabpage" id="tab-data">
-      <h3>Дерекпен жұмыс (Data)</h3>
-      <p class="muted">Кестені қарап, 2 сұраққа жауап бер. Төменде график автоматты салынады.</p>
+  <canvas id="chart" width="700" height="320" class="canvas"></canvas>
 
-      <div class="grid2">
-        <div class="card">
-          <h4>Дерек кестесі</h4>
-          <div id="dataTable" class="tableWrap"></div>
-        </div>
-        <div class="card">
-          <h4>График</h4>
-          <canvas id="chart" width="520" height="300" class="canvas"></canvas>
-          <p class="muted small">Қарапайым сызықтық график (кітапханасыз).</p>
-        </div>
-      </div>
+  <label class="lbl">1. Дерек нені көрсетеді?</label>
+  <textarea id="dataQ1" class="textarea"></textarea>
 
-      <label class="lbl">1) Дерек нені көрсетеді? (1–2 сөйлем)</label>
-      <textarea id="dataQ1" class="textarea" placeholder="..."></textarea>
+  <label class="lbl">2. Қандай шешім ұсынасың?</label>
+  <textarea id="dataQ2" class="textarea"></textarea>
+</section>
 
-      <label class="lbl">2) Бір шешім ұсын (нақты)</label>
-      <textarea id="dataQ2" class="textarea" placeholder="..."></textarea>
-    </section>
+<!-- ===================== 4. Нәтиже ===================== -->
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <h2>4. Нәтижені сақтау</h2>
+      <p class="muted">
+        Барлық бөлімдерді толтырған соң нәтижені сақта.
+      </p>
+    </div>
+  </div>
 
-    <!-- Submit -->
-    <section class="tabpage" id="tab-submit">
-      <h3>Нәтижені сақтау</h3>
-      <p class="muted">Барлығы дайын болса, «Сақтау» бас. Мұғалім бетінде көрінеді.</p>
+  <button id="saveBtn" class="btn">Сақтау</button>
+  <div id="saveResult" class="result"></div>
+</section>
 
-      <div class="card">
-        <div class="kv">
-          <div><span class="muted">Оқушы:</span> <b id="sumName">—</b></div>
-          <div><span class="muted">Сынып:</span> <b id="sumClass">—</b></div>
-          <div><span class="muted">Тақырып:</span> <b id="sumTopic">—</b></div>
-          <div><span class="muted">Деңгей:</span> <b id="sumLevel">—</b></div>
-          <div><span class="muted">Диагн. балл:</span> <b id="sumScore">—</b></div>
-        </div>
-      </div>
+<!-- ===================== AI КӨМЕКШІ ===================== -->
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <h2>AI-көмекші</h2>
+      <p class="muted">
+        Тақырып бойынша сұрақ қой: «Осмос қалай жүреді?», 
+        «Плазмолиз деген не?», 
+        «Мембрана қызметін түсіндір».
+      </p>
+    </div>
+  </div>
 
-      <button id="saveBtn" class="btn">Сақтау</button>
-      <div class="result" id="saveResult"></div>
+  <div class="card" style="margin-top:15px;">
+    <div class="elfsight-app-212fcadb-97f4-4859-94f9-2b13d10252e3"></div>
+  </div>
+</section>
 
-      <hr class="hr"/>
-
-     <hr class="hr"/>
-
-<h3>AI-көмекші</h3>
-
-<div class="card">
-  <p class="muted">
-    Тақырып бойынша сұрақ қой: мысалы, «Плазмолиз деген не?», «Осмос бағыты қалай анықталады?»,
-    «Митохондрия қызметін түсіндір».
-  </p>
-<!-- Elfsight AI Chatbot | Untitled AI Chatbot -->
-<script src="https://elfsightcdn.com/platform.js" async></script>
-<div class="elfsight-app-212fcadb-97f4-4859-94f9-2b13d10252e3" data-elfsight-app-lazy></div>
-  <!-- Elfsight AI Chatbot -->
- 
-    </section>
-  </section>
 </main>
 
 <footer class="footer">
   <div class="wrap foot">
-    <span id="footInfo">Bio360</span>
+    <span>Bio360</span>
     <span class="muted">Оқушы панелі</span>
   </div>
 </footer>
 
+<!-- Негізгі логика -->
 <script src="assets/app.js"></script>
+
+<!-- Elfsight платформа -->
+<script src="https://elfsightcdn.com/platform.js"></script>
+
 </body>
 </html>
