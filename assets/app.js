@@ -376,7 +376,283 @@ function gradeQuiz(quiz, picked){
   }
   return {score};
 }
+// --------- Decision Story + BioPassport (ADD-ON) ----------
+const PASS_KEY = "bio360_passport_v1";
 
+function readPass(){ return JSON.parse(localStorage.getItem(PASS_KEY) || "{}"); }
+function writePass(obj){ localStorage.setItem(PASS_KEY, JSON.stringify(obj)); }
+
+function evidenceScore(text){
+  const t = (text||"").toLowerCase();
+  const hits = ["себебі","өйткені","дәлел","сондықтан","қорытынды","нәтиже","мысалы"];
+  let c = 0;
+  hits.forEach(w=>{ if(t.includes(w)) c++; });
+  // 0..100
+  return Math.min(100, c * 15);
+}
+
+function dataScore(q1,q2){
+  const a = (q1||"").trim().length;
+  const b = (q2||"").trim().length;
+  let s = 0;
+  if(a >= 20) s += 50; else if(a >= 10) s += 30; else if(a >= 5) s += 15;
+  if(b >= 25) s += 50; else if(b >= 12) s += 30; else if(b >= 6) s += 15;
+  return Math.min(100, s);
+}
+
+function lScore(level){
+  // understanding/apply/analyze split
+  if(level==="L1") return {u:85,a:35,an:10};
+  if(level==="L2") return {u:70,a:75,an:35};
+  return {u:60,a:70,an:85}; // L3
+}
+
+function mergePassport(name, cls, topicId, topicTitle, level, score, maxScore, decision, scenarioAnswer, dataQ1, dataQ2){
+  const pass = readPass();
+  const key = `${name}__${cls}`;
+  const prev = pass[key] || {
+    studentName: name,
+    studentClass: cls,
+    badges: [],
+    skills: {understand:0, apply:0, analyze:0, data:0, evidence:0},
+    last: null
+  };
+
+  const L = lScore(level);
+  const ev = evidenceScore(scenarioAnswer);
+  const ds = dataScore(dataQ1, dataQ2);
+
+  // update skills (take max, so growth is visible)
+  prev.skills.understand = Math.max(prev.skills.understand, L.u);
+  prev.skills.apply      = Math.max(prev.skills.apply, L.a);
+  prev.skills.analyze    = Math.max(prev.skills.analyze, L.an);
+  prev.skills.data       = Math.max(prev.skills.data, ds);
+  prev.skills.evidence   = Math.max(prev.skills.evidence, ev);
+
+  // badges
+  const addBadge = (txt)=>{
+    if(!prev.badges.includes(txt)) prev.badges.push(txt);
+  };
+  if(level==="L1") addBadge("🌱 Негізді бекітті");
+  if(level==="L2") addBadge("🧪 Қолдана алады");
+  if(level==="L3") addBadge("🧠 Терең талдаушы");
+
+  if(ev >= 45) addBadge("🗣 Evidence Master");
+  if(ds >= 60) addBadge("📊 Data Analyst");
+  if(decision && decision.path==="hyper" && decision.sign==="plasmolysis") addBadge("🧩 Дұрыс сценарий жолы");
+
+  prev.last = {
+    when: new Date().toISOString(),
+    topicId, topicTitle, level, score, maxScore,
+    decision,
+    scenarioAnswer,
+    dataQ1, dataQ2
+  };
+
+  pass[key] = prev;
+  writePass(pass);
+}
+
+function bestNextStep(sk){
+  // return weakest area
+  const entries = [
+    ["Дәлел", sk.evidence],
+    ["Data", sk.data],
+    ["Талдау", sk.analyze],
+    ["Қолдану", sk.apply],
+    ["Түсіну", sk.understand]
+  ];
+  entries.sort((a,b)=>a[1]-b[1]);
+  const [name,val] = entries[0];
+  if(val >= 60) return "Келесі қадам: күрделі мәселе бойынша 1 жаңа сценарий шешіп көр (L3).";
+  if(name==="Дәлел") return "Келесі қадам: жауапты «себебі → дәлел → қорытынды» құрылымымен жаз.";
+  if(name==="Data") return "Келесі қадам: кестеден 2 нақты заңдылық тауып, бір шешімді дәлелмен ұсын.";
+  if(name==="Талдау") return "Келесі қадам: «неге?» деген сұраққа кемі 2 себеп келтіріп үйрен.";
+  if(name==="Қолдану") return "Келесі қадам: ұғымды тәжірибемен/жағдаймен байланыстырып жаз.";
+  return "Келесі қадам: негізгі ұғымдарды қысқа анықтамамен қайталау.";
+}
+
+// Decision story UI for CELL
+function renderDecisionStory(){
+  const box = document.getElementById("scenarioBox");
+  if(!box) return null;
+
+  // only for cell topic in this version
+  const state = getState();
+  if(!state || state.topicId !== "cell") return null;
+
+  // Build interactive story (3 choices)
+  box.innerHTML = `
+    <h4>Decision Story: «Осмос дағдарысы»</h4>
+    <p class="muted">Сен 3 қадамда шешім қабылдайсың. Соңында жүйе салдарын көрсетеді.</p>
+
+    <div class="q">
+      <h4>1) Орта қандай?</h4>
+      <label class="opt"><input type="radio" name="d1" value="hyper"> Гипертониялық (тұз көп)</label>
+      <label class="opt"><input type="radio" name="d1" value="hypo"> Гипотониялық (су көп)</label>
+      <label class="opt"><input type="radio" name="d1" value="iso"> Изотониялық (тең)</label>
+    </div>
+
+    <div class="q">
+      <h4>2) Жасушада қандай белгі байқалады?</h4>
+      <label class="opt"><input type="radio" name="d2" value="plasmolysis"> Плазмолиз (су шығып, цитоплазма жиырылады)</label>
+      <label class="opt"><input type="radio" name="d2" value="turgor"> Тургор артады (су кіріп, керіледі)</label>
+      <label class="opt"><input type="radio" name="d2" value="nochange"> Айқын өзгеріс жоқ</label>
+    </div>
+
+    <div class="q">
+      <h4>3) Дұрыс әрекет қандай?</h4>
+      <label class="opt"><input type="radio" name="d3" value="fix_hyper"> Суды азайтып, тұзды ерітіндіні әлсірету</label>
+      <label class="opt"><input type="radio" name="d3" value="fix_hypo"> Тұз қосып, ортаны теңестіру</label>
+      <label class="opt"><input type="radio" name="d3" value="wait"> Ештеңе істемей күту</label>
+    </div>
+
+    <div class="row">
+      <button id="decideBtn" class="btn">Салдарын көру</button>
+      <div class="result" id="decideRes"></div>
+    </div>
+  `;
+
+  const btn = document.getElementById("decideBtn");
+  btn.addEventListener("click", ()=>{
+    const path = document.querySelector('input[name="d1"]:checked')?.value;
+    const sign = document.querySelector('input[name="d2"]:checked')?.value;
+    const act  = document.querySelector('input[name="d3"]:checked')?.value;
+
+    if(!path || !sign || !act){
+      alert("Үш қадамның бәрін таңда.");
+      return;
+    }
+
+    const res = document.getElementById("decideRes");
+    let msg = "";
+
+    // Simple logic
+    if(path==="hyper" && sign==="plasmolysis" && act==="fix_hyper"){
+      msg = "✅ Дәл! Гипер ортада су жасушадан шығады → плазмолиз. Ерітіндіні әлсіретсең, процесс кері жүреді.";
+    } else if(path==="hypo" && sign==="turgor" && act==="fix_hypo"){
+      msg = "✅ Дұрыс! Су көп ортада жасуша ісінеді, тургор артады. Теңестіру үшін тұз қосып изотонияға жақындатасың.";
+    } else if(path==="iso" && sign==="nochange"){
+      msg = "✅ Дұрыс логика: изотонияда айқын өзгеріс болмайды. Бірақ әрекет те қажет емес.";
+    } else {
+      msg = "⚠️ Сәйкессіздік бар. Орта–белгі–әрекет байланысын қайта тексер: осмос бағыты ортаға тәуелді.";
+    }
+
+    // store decision in state so we can save it
+    const st = getState() || {};
+    st.decision = {path, sign, act};
+    saveState(st);
+
+    res.textContent = msg;
+  });
+
+  return true;
+}
+
+// Passport page renderer
+function initPassport(){
+  const pName = document.getElementById("pName");
+  if(!pName) return;
+
+  const state = getState();
+  if(!state){
+    pName.textContent = "BioPassport";
+    document.getElementById("pMeta").textContent = "Алдымен оқушыны бастаңыз (index.html).";
+    return;
+  }
+
+  const pass = readPass();
+  const key = `${state.studentName}__${state.studentClass}`;
+  const obj = pass[key];
+
+  if(!obj){
+    pName.textContent = state.studentName;
+    document.getElementById("pMeta").textContent = `${state.studentClass}-сынып • Әзірге нәтиже жоқ (алдымен сақта).`;
+    document.getElementById("pLevel").textContent = "—";
+    return;
+  }
+
+  pName.textContent = obj.studentName;
+  document.getElementById("pMeta").textContent = `${obj.studentClass}-сынып • Соңғы жаңарту: ${new Date(obj.last?.when || Date.now()).toLocaleString()}`;
+  document.getElementById("pLevel").textContent = obj.last?.level || "—";
+
+  const sk = obj.skills;
+
+  const setBar = (idFill, idTxt, v)=>{
+    document.getElementById(idFill).style.width = `${v}%`;
+    document.getElementById(idTxt).textContent = v;
+  };
+  setBar("mUnderstand","tUnderstand", sk.understand);
+  setBar("mApply","tApply", sk.apply);
+  setBar("mAnalyze","tAnalyze", sk.analyze);
+  setBar("mData","tData", sk.data);
+  setBar("mEvidence","tEvidence", sk.evidence);
+
+  document.getElementById("nextStep").textContent = "📌 " + bestNextStep(sk);
+
+  const badges = document.getElementById("badges");
+  badges.innerHTML = (obj.badges?.length ? obj.badges : ["Әзірге бейдж жоқ"]).map(b=>{
+    if(b==="Әзірге бейдж жоқ") return `<span class="muted">${b}</span>`;
+    return `<span class="bdg"><strong>✓</strong>${b}</span>`;
+  }).join("");
+
+  const last = obj.last;
+  const sum = document.getElementById("lastSummary");
+  sum.innerHTML = `
+    <div><b>Тақырып:</b> ${last.topicTitle}</div>
+    <div><b>Диагностика:</b> ${last.score}/${last.maxScore} • <b>${last.level}</b></div>
+    <div><b>Decision:</b> ${last.decision ? `${last.decision.path} / ${last.decision.sign} / ${last.decision.act}` : "—"}</div>
+  `;
+}
+
+// Hook into existing initLearn save handler: extend it safely
+(function patchSave(){
+  const oldInitLearn = initLearn;
+  initLearn = async function(){
+    await oldInitLearn();
+
+    // after learn loaded, replace scenario box with decision story for CELL
+    renderDecisionStory();
+
+    // patch save button to also update passport
+    const saveBtn = document.getElementById("saveBtn");
+    if(!saveBtn) return;
+
+    // prevent double patch
+    if(saveBtn.dataset.patched==="1") return;
+    saveBtn.dataset.patched = "1";
+
+    saveBtn.addEventListener("click", ()=>{
+      try{
+        const st = getState();
+        const subs = JSON.parse(localStorage.getItem("bio360_submissions_v1") || "[]");
+        const last = subs[0]; // latest saved
+        if(!last) return;
+
+        mergePassport(
+          last.studentName,
+          last.studentClass,
+          last.topicId,
+          last.topicTitle,
+          last.level,
+          last.score,
+          last.maxScore,
+          st?.decision || null,
+          last.scenarioAnswer,
+          last.dataQ1,
+          last.dataQ2
+        );
+      }catch(e){
+        // ignore
+      }
+    });
+  };
+})();
+
+// boot passport too
+document.addEventListener("DOMContentLoaded", ()=>{
+  initPassport();
+});
 // boot
 document.addEventListener("DOMContentLoaded", ()=>{
   initIndex();
