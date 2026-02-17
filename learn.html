@@ -7,13 +7,14 @@
   <link rel="stylesheet" href="assets/style.css"/>
 </head>
 <body>
+
 <header class="topbar">
   <div class="wrap bar">
     <div class="brand">
       <div class="logo">B360</div>
       <div>
-        <h1 id="title">Сабақ</h1>
-        <p class="sub" id="meta">—</p>
+        <h1 id="tTitle">—</h1>
+        <p class="sub" id="tMeta">—</p>
       </div>
     </div>
     <nav class="nav">
@@ -33,35 +34,34 @@
   <section class="panel">
     <h2>Тест</h2>
     <div id="quiz" class="quiz"></div>
-    <div class="row">
-      <button id="gradeBtn" class="btn">Бағалау</button>
-      <div id="gradeOut" class="badge">—</div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" id="grade">Бағалау</button>
+      <div class="badge" id="out">—</div>
     </div>
+    <p class="muted small" style="margin-top:8px">Ереже: алдымен тестті бағала → кейін жазбаша жауапты толтыр → сақтау.</p>
   </section>
 
   <section class="panel">
     <h2>Қысқа жауап</h2>
-    <p class="muted">2–4 сөйлеммен дәлелдеп жаз.</p>
-
-    <label class="lbl">1) Нені түсіндің?</label>
+    <label class="lbl">1) Негізгі идеяны 2–4 сөйлеммен түсіндір</label>
     <textarea id="a1" class="textarea" placeholder="..."></textarea>
 
-    <label class="lbl">2) Дәлел / мысал келтір</label>
+    <label class="lbl">2) Дәлел/мысал келтір (өмірден, тәжірибеден, data/логикадан)</label>
     <textarea id="a2" class="textarea" placeholder="..."></textarea>
 
-    <div class="row">
-      <button id="saveBtn" class="btn">Жіберу / Сақтау</button>
-      <div id="saveOut" class="muted"></div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" id="save">Жіберу / Сақтау</button>
+      <div class="muted" id="saveOut"></div>
     </div>
   </section>
 
   <section class="panel">
-    <h2>AI-көмекші</h2>
-    <p class="muted">Тақырып бойынша нақты сұрақ қой.</p>
+    <h2>AI-көмекші (қаласаң)</h2>
 
     <!-- Elfsight AI Chatbot -->
-    <script src="https://elfsightcdn.com/platform.js" async></script>
-    <div class="elfsight-app-212fcadb-97f4-4859-94f9-2b13d10252e3" data-elfsight-app-lazy></div>
+   
+<script src="https://elfsightcdn.com/platform.js" async></script>
+<div class="elfsight-app-12fca53a-49b4-4f6f-89c4-986950be3ae6" data-elfsight-app-lazy></div>
   </section>
 
 </main>
@@ -69,43 +69,42 @@
 <script src="assets/app.js"></script>
 <script>
   const sess = Bio360.getSession();
-  const topicId = Bio360.getActiveTopic();
-  if(!sess || !topicId){ alert("Тақырып таңдалмаған."); location.href="topics.html"; }
+  const key = Bio360.getActiveTopicKey();
+  if(!sess || !key){ alert("Тақырып таңдалмаған."); location.href="topics.html"; }
 
-  const t = Bio360.getTopic(topicId);
-
-  document.getElementById("title").textContent = t.title;
-  document.getElementById("meta").textContent  = `${sess.name} • ${sess.cls}-сынып • ${t.id}`;
-  document.getElementById("theory").innerHTML  = Bio360.formatTheory(t.theory);
-
-  Bio360.renderQuiz("quiz", topicId);
+  const topic = Bio360.getTopicByKey(key);
+  document.getElementById("tTitle").textContent = topic.title;
+  document.getElementById("tMeta").textContent = `${sess.name} • ${sess.cls}-сынып`;
+  document.getElementById("theory").innerHTML = Bio360.formatTheory(topic.theory);
+  Bio360.renderQuiz("quiz", topic.quiz);
 
   let last = null;
 
-  document.getElementById("gradeBtn").addEventListener("click", ()=>{
-    last = Bio360.gradeQuiz(topicId);
-    document.getElementById("gradeOut").textContent = `Балл: ${last.score}/${last.max} • ${last.level}`;
+  document.getElementById("grade").addEventListener("click", ()=>{
+    last = Bio360.gradeQuiz(topic.quiz);
+    document.getElementById("out").textContent = `Балл: ${last.score}/${last.max} • ${last.level}`;
   });
 
-  document.getElementById("saveBtn").addEventListener("click", ()=>{
-    if(!last){ alert("Алдымен 'Бағалау' бас."); return; }
-
+  document.getElementById("save").addEventListener("click", ()=>{
+    if(!last) return alert("Алдымен «Бағалау» бас.");
     const a1 = document.getElementById("a1").value.trim();
     const a2 = document.getElementById("a2").value.trim();
-    if(!a1 || !a2){ alert("Екі жауапты да толтыр."); return; }
+    if(!a1 || !a2) return alert("Екі жауапты да толтыр.");
 
     Bio360.saveResult({
       name: sess.name,
       cls: sess.cls,
-      topic: topicId,
-      topicTitle: t.title,
+      topicKey: key,
+      topicTitle: topic.title,
       score: last.score,
       max: last.max,
       level: last.level,
       a1, a2
     });
 
-    document.getElementById("saveOut").innerHTML = `✅ Сақталды. Мұғалім панелінде көрінеді.`;
+    document.getElementById("saveOut").textContent = "✅ Сақталды. Мұғалім панелінде көрінеді.";
+    document.getElementById("a1").value = "";
+    document.getElementById("a2").value = "";
   });
 </script>
 </body>
