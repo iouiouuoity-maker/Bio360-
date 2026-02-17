@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Bio360 • Тақырыптар</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap bar">
+    <div class="brand">
+      <div class="logo">B360</div>
+      <div>
+        <h1>Тақырыптар</h1>
+        <p class="sub">Тақырыпты таңда → тапсырма орында → нәтиже сақталады</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="pill" href="index.html">Басты бет</a>
+      <a class="pill" href="topics.html">Тақырыптар</a>
+      <a class="pill" href="teacher.html">Мұғалім</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="panel">
+    <div class="row" style="justify-content:space-between">
+      <div>
+        <h2>Тақырыптар галереясы</h2>
+        <p class="muted small">Карточкада: қысқаша + статистика (жауап саны, орташа балл, L1/L2/L3).</p>
+      </div>
+      <div class="badge" id="who">—</div>
+    </div>
+
+    <div id="topicGrid" class="topicGrid"></div>
+  </section>
+</main>
+
+<script src="assets/app.js"></script>
+<script>
+  const sess = Bio360.getSession();
+  if(!sess){ alert("Алдымен басты беттен баста."); location.href="index.html"; }
+  document.getElementById("who").textContent = `${sess.name} • ${sess.cls}-сынып`;
+  Bio360.renderTopicGallery("topicGrid");
+</script>
+</body>
+</html>
