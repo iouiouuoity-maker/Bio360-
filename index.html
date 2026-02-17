@@ -13,7 +13,7 @@
       <div class="logo">B360</div>
       <div>
         <h1>Bio360</h1>
-        <p class="sub">Оқушы • Тақырыптар • Нәтиже • Мұғалім панелі</p>
+        <p class="sub">5–6: Жаратылыстану • 7–11: Биология • Нәтиже мұғалімге көрінеді</p>
       </div>
     </div>
     <nav class="nav">
@@ -26,11 +26,11 @@
 
 <main class="wrap">
   <section class="panel">
-    <h2>Оқушыны бастау</h2>
-    <p class="muted">Аты-жөніңді және сыныпты енгіз → тақырып таңда.</p>
+    <h2>Оқушы профилі</h2>
+    <p class="muted">Атыңды және сыныпты енгіз → тақырып таңда → тест тапсырып, жауап жаз → нәтиже сақталады.</p>
 
     <label class="lbl">Оқушы аты-жөні</label>
-    <input id="name" class="input" placeholder="Мысалы: Аружан Н." />
+    <input id="name" class="input" placeholder="Мысалы: Айару С." />
 
     <label class="lbl">Сынып</label>
     <select id="cls" class="input">
@@ -38,22 +38,22 @@
       <option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option>
     </select>
 
-    <div class="row">
-      <button id="goTopics" class="btn">Тақырыптарға өту</button>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" id="go">Тақырыптарға өту</button>
     </div>
 
-    <p class="muted small">
-      Ескерту: нәтижелер осы браузерде сақталады (localStorage). Мұғалім панелі де сол деректі оқиды.
+    <p class="muted small" style="margin-top:10px">
+      Бұл нұсқа GitHub Pages-те жұмыс істейді. Деректер осы браузерде сақталады (localStorage).
     </p>
   </section>
 </main>
 
 <script src="assets/app.js"></script>
 <script>
-  document.getElementById("goTopics").addEventListener("click", ()=>{
+  document.getElementById("go").addEventListener("click", () => {
     const name = document.getElementById("name").value.trim();
     const cls = document.getElementById("cls").value;
-    if(!name){ alert("Оқушы аты-жөнін енгіз."); return; }
+    if (!name) return alert("Оқушы аты-жөнін енгіз.");
     Bio360.setSession({ name, cls });
     location.href = "topics.html";
   });
