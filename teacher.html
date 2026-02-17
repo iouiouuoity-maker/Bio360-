@@ -1,80 +1,132 @@
-<!doctype html>
-<html lang="kk">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Bio360 • Мұғалім</title>
-  <link rel="stylesheet" href="assets/style.css"/>
-</head>
-<body>
-<header class="topbar">
-  <div class="wrap bar">
-    <div class="brand">
-      <div class="logo">B360</div>
-      <div>
-        <h1>Мұғалім панелі</h1>
-        <p class="sub">Нәтижелерді қарау • Сүзгі • CSV экспорт</p>
-      </div>
+// ========= Bio360 Teacher Panel =========
+
+function getAllResults() {
+  const main = JSON.parse(localStorage.getItem("bio360_results_v1") || "[]");
+  const brain = JSON.parse(localStorage.getItem("brainResults") || "[]");
+
+  const brainFormatted = brain.map(r => ({
+    name: r.name,
+    cls: "",
+    topic: "Ми бөлімдері",
+    level: r.level,
+    score: r.score,
+    max: 8,
+    date: r.date
+  }));
+
+  return [...main, ...brainFormatted];
+}
+
+function renderTopics(results) {
+  const select = document.getElementById("fTopic");
+  const topics = [...new Set(results.map(r => r.topic).filter(Boolean))];
+
+  select.innerHTML = `<option value="">Барлығы</option>` +
+    topics.map(t => `<option value="${t}">${t}</option>`).join("");
+}
+
+function applyFilter() {
+  const fClass = document.getElementById("fClass").value;
+  const fTopic = document.getElementById("fTopic").value;
+  const fLevel = document.getElementById("fLevel").value;
+
+  let results = getAllResults();
+
+  if (fClass) results = results.filter(r => r.cls == fClass);
+  if (fTopic) results = results.filter(r => r.topic == fTopic);
+  if (fLevel) results = results.filter(r => r.level == fLevel);
+
+  renderList(results);
+  renderStats(results);
+}
+
+function renderList(results) {
+  const list = document.getElementById("list");
+
+  if (results.length === 0) {
+    list.innerHTML = `<p class="muted">Нәтиже жоқ</p>`;
+    return;
+  }
+
+  list.innerHTML = results.map(r => `
+    <div class="card">
+      <b>${r.name}</b>
+      <p>Тақырып: ${r.topic}</p>
+      ${r.cls ? `<p>Сынып: ${r.cls}</p>` : ""}
+      <p>Балл: ${r.score}/${r.max || ""}</p>
+      <p>Деңгей: ${r.level}</p>
+      ${r.date ? `<p>${r.date}</p>` : ""}
     </div>
-    <nav class="nav">
-      <a class="pill" href="index.html">Басты бет</a>
-      <a class="pill" href="teacher.html">Мұғалім</a>
-    </nav>
-  </div>
-</header>
+  `).join("");
+}
 
-<main class="wrap">
-  <section class="panel">
-    <div class="grid2">
-      <div class="card">
-        <h3>Сүзгі</h3>
-        <label class="lbl">Сынып</label>
-        <select id="fClass" class="input">
-          <option value="">Барлығы</option>
-          <option value="5">5</option><option value="6">6</option><option value="7">7</option>
-          <option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option>
-        </select>
+function renderStats(results) {
+  const stats = document.getElementById("stats");
 
-        <label class="lbl">Тақырып</label>
-        <select id="fTopic" class="input">
-          <option value="">Барлығы</option>
-        </select>
+  if (results.length === 0) {
+    stats.innerHTML = `<p class="muted">Дерек жоқ</p>`;
+    return;
+  }
 
-        <label class="lbl">Деңгей</label>
-        <select id="fLevel" class="input">
-          <option value="">Барлығы</option>
-          <option value="L1">L1 (Негіз)</option>
-          <option value="L2">L2 (Орта)</option>
-          <option value="L3">L3 (Терең)</option>
-        </select>
+  const total = results.length;
+  const avg = (results.reduce((s, r) => s + Number(r.score), 0) / total).toFixed(1);
+  const L1 = results.filter(r => r.level === "L1").length;
+  const L2 = results.filter(r => r.level === "L2").length;
+  const L3 = results.filter(r => r.level === "L3").length;
 
-        <div class="row">
-          <button id="applyFilter" class="btn">Қолдану</button>
-          <button id="exportCsv" class="btn ghost">CSV экспорт</button>
-        </div>
+  stats.innerHTML = `
+    <p><b>Барлығы:</b> ${total}</p>
+    <p><b>Орташа балл:</b> ${avg}</p>
+    <p><b>L1:</b> ${L1}</p>
+    <p><b>L2:</b> ${L2}</p>
+    <p><b>L3:</b> ${L3}</p>
+  `;
+}
 
-        <p class="muted small">Ескерту: Бұл панель де localStorage дерегін оқиды.</p>
-      </div>
+function exportCSV() {
+  const results = getAllResults();
 
-      <div class="card">
-        <h3>Жалпы статистика</h3>
-        <div id="stats" class="stats"></div>
-        <button id="clearAll" class="btn danger">Барлығын тазарту</button>
-      </div>
-    </div>
+  if (results.length === 0) {
+    alert("Экспорт жасайтын дерек жоқ.");
+    return;
+  }
 
-    <h3>Нәтижелер</h3>
-    <div id="list" class="list"></div>
-  </section>
-</main>
+  const header = ["Аты", "Сынып", "Тақырып", "Балл", "Деңгей"];
+  const rows = results.map(r => [
+    r.name,
+    r.cls || "",
+    r.topic,
+    r.score,
+    r.level
+  ]);
 
-<footer class="footer">
-  <div class="wrap foot">
-    <span>Bio360</span>
-    <span class="muted">Teacher</span>
-  </div>
-</footer>
+  const csv = [header, ...rows]
+    .map(row => row.map(val => `"${val}"`).join(","))
+    .join("\n");
 
-<script src="assets/teacher.js"></script>
-</body>
-</html>
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "bio360_results.csv";
+  link.click();
+}
+
+function clearAll() {
+  if (confirm("Барлық нәтижені өшіреміз бе?")) {
+    localStorage.removeItem("bio360_results_v1");
+    localStorage.removeItem("brainResults");
+    applyFilter();
+  }
+}
+
+// ===== INIT =====
+
+document.getElementById("applyFilter").addEventListener("click", applyFilter);
+document.getElementById("exportCsv").addEventListener("click", exportCSV);
+document.getElementById("clearAll").addEventListener("click", clearAll);
+
+// Алғашқы жүктеу
+const allResults = getAllResults();
+renderTopics(allResults);
+renderList(allResults);
+renderStats(allResults);
