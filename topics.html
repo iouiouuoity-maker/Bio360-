@@ -13,7 +13,7 @@
       <div class="logo">B360</div>
       <div>
         <h1>Тақырыптар</h1>
-        <p class="sub">Тақырыпты таңда → тапсырма орында → нәтиже сақталады</p>
+        <p class="sub">Сыныпқа сай контент • тест • қысқа жауап • нәтиже сақталады</p>
       </div>
     </div>
     <nav class="nav">
@@ -28,22 +28,22 @@
   <section class="panel">
     <div class="row" style="justify-content:space-between">
       <div>
-        <h2>Тақырыптар галереясы</h2>
-        <p class="muted small">Карточкада: қысқаша + статистика (жауап саны, орташа балл, L1/L2/L3).</p>
+        <h2>Сыныбыңа арналған тақырыптар</h2>
+        <p class="muted small">Карточкада: жауап саны + орташа балл + L1/L2/L3.</p>
       </div>
       <div class="badge" id="who">—</div>
     </div>
 
-    <div id="topicGrid" class="topicGrid"></div>
+    <div id="grid" class="topicGrid"></div>
   </section>
 </main>
 
 <script src="assets/app.js"></script>
 <script>
   const sess = Bio360.getSession();
-  if(!sess){ alert("Алдымен басты беттен баста."); location.href="index.html"; }
+  if (!sess) { alert("Алдымен басты беттен баста."); location.href="index.html"; }
   document.getElementById("who").textContent = `${sess.name} • ${sess.cls}-сынып`;
-  Bio360.renderTopicGallery("topicGrid");
+  Bio360.renderTopicsForClass("grid", sess.cls);
 </script>
 </body>
 </html>
