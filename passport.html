@@ -1,77 +1,179 @@
 <!doctype html>
 <html lang="kk">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Bio360 • BioPassport</title>
-  <link rel="stylesheet" href="assets/style.css"/>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Bio360 • BioPassport</title>
+<link rel="stylesheet" href="assets/style.css"/>
 </head>
 <body>
+
 <header class="topbar">
-  <div class="wrap bar">
-    <div class="brand">
-      <div class="logo">B360</div>
-      <div>
-        <h1>BioPassport</h1>
-        <p class="sub">Оқушының прогресс профилі • бейдждер</p>
-      </div>
-    </div>
-    <nav class="nav">
-      <a class="pill" href="index.html">Басты бет</a>
-      <a class="pill" href="learn.html">Сабақ</a>
-      <a class="pill" href="teacher.html">Мұғалім</a>
-    </nav>
-  </div>
+<div class="wrap bar">
+<div class="brand">
+<div class="logo">B360</div>
+<div>
+<h1>BioPassport</h1>
+<p class="sub">Оқушы прогресі • дағды профилі • бейдждер</p>
+</div>
+</div>
+<nav class="nav">
+<a class="pill" href="index.html">Басты бет</a>
+<a class="pill" href="topics.html">Тақырыптар</a>
+<a class="pill" href="teacher.html">Мұғалім</a>
+</nav>
+</div>
 </header>
 
 <main class="wrap">
-  <section class="panel">
-    <div class="panel-head">
-      <div>
-        <h2 id="pName">—</h2>
-        <p class="muted" id="pMeta">—</p>
-      </div>
-      <div class="badge" id="pLevel">—</div>
-    </div>
+<section class="panel">
 
-    <div class="grid2" style="margin-top:12px">
-      <div class="card">
-        <h3>Дағды профилі (0–100)</h3>
-        <div class="meter">
-          <div class="mrow"><span>Түсіну</span><div class="bar"><div id="mUnderstand" class="fill"></div></div><b id="tUnderstand">0</b></div>
-          <div class="mrow"><span>Қолдану</span><div class="bar"><div id="mApply" class="fill"></div></div><b id="tApply">0</b></div>
-          <div class="mrow"><span>Талдау</span><div class="bar"><div id="mAnalyze" class="fill"></div></div><b id="tAnalyze">0</b></div>
-          <div class="mrow"><span>Data</span><div class="bar"><div id="mData" class="fill"></div></div><b id="tData">0</b></div>
-          <div class="mrow"><span>Дәлел</span><div class="bar"><div id="mEvidence" class="fill"></div></div><b id="tEvidence">0</b></div>
-        </div>
-        <p class="muted small" id="nextStep" style="margin-top:10px"></p>
-      </div>
+<div class="panel-head">
+<div>
+<h2 id="pName">—</h2>
+<p class="muted" id="pMeta">—</p>
+</div>
+<div class="badge" id="pLevel">—</div>
+</div>
 
-      <div class="card">
-        <h3>Бейдждер</h3>
-        <div id="badges" class="badges"></div>
-        <p class="muted small" style="margin-top:10px">
-          Бейдждер автомат беріледі: сценарий таңдауы, дәлел, data қорытындысы, деңгей.
-        </p>
-      </div>
-    </div>
+<div class="grid2" style="margin-top:15px">
 
-    <hr class="hr"/>
+<div class="card">
+<h3>Дағды профилі</h3>
 
-    <div class="card">
-      <h3>Соңғы нәтиже қысқаша</h3>
-      <div id="lastSummary" class="muted"></div>
-    </div>
-  </section>
+<div class="mrow">
+<span>Түсіну</span>
+<div class="bar"><div id="mUnderstand" class="fill"></div></div>
+<b id="tUnderstand">0</b>
+</div>
+
+<div class="mrow">
+<span>Қолдану</span>
+<div class="bar"><div id="mApply" class="fill"></div></div>
+<b id="tApply">0</b>
+</div>
+
+<div class="mrow">
+<span>Талдау</span>
+<div class="bar"><div id="mAnalyze" class="fill"></div></div>
+<b id="tAnalyze">0</b>
+</div>
+
+<div class="mrow">
+<span>Data</span>
+<div class="bar"><div id="mData" class="fill"></div></div>
+<b id="tData">0</b>
+</div>
+
+<div class="mrow">
+<span>Дәлел</span>
+<div class="bar"><div id="mEvidence" class="fill"></div></div>
+<b id="tEvidence">0</b>
+</div>
+
+<p class="muted small" id="nextStep" style="margin-top:10px"></p>
+</div>
+
+<div class="card">
+<h3>Бейдждер</h3>
+<div id="badges" class="badges"></div>
+</div>
+
+</div>
+
+<hr class="hr"/>
+
+<div class="card">
+<h3>Соңғы нәтиже</h3>
+<div id="lastSummary" class="muted"></div>
+</div>
+
+</section>
 </main>
 
-<footer class="footer">
-  <div class="wrap foot">
-    <span>Bio360</span>
-    <span class="muted">BioPassport</span>
-  </div>
-</footer>
-
 <script src="assets/app.js"></script>
+
+<script>
+(function(){
+
+const sess = Bio360.getSession();
+const results = Bio360.getResults();
+
+if(!sess){
+document.getElementById("pName").innerText = "Оқушы анықталмаған";
+return;
+}
+
+const myResults = results.filter(r=>r.name===sess.name);
+
+document.getElementById("pName").innerText = sess.name;
+document.getElementById("pMeta").innerText = sess.cls + "-сынып • Нәтижелер саны: " + myResults.length;
+
+if(myResults.length===0){
+document.getElementById("lastSummary").innerText = "Әзірге нәтиже жоқ.";
+return;
+}
+
+let totalScore = 0;
+let totalMax = 0;
+let L1=0, L2=0, L3=0;
+
+myResults.forEach(r=>{
+totalScore += Number(r.score||0);
+totalMax += Number(r.max||0);
+if(r.level==="L1") L1++;
+if(r.level==="L2") L2++;
+if(r.level==="L3") L3++;
+});
+
+const percent = Math.round((totalScore/totalMax)*100);
+
+let globalLevel = percent<50 ? "L1" :
+percent<80 ? "L2" : "L3";
+
+document.getElementById("pLevel").innerText = globalLevel + " • " + percent + "%";
+
+function setMeter(id,val){
+document.getElementById(id).style.width = val + "%";
+}
+
+setMeter("mUnderstand", percent);
+setMeter("mApply", Math.min(percent+5,100));
+setMeter("mAnalyze", Math.min(percent-5,100));
+setMeter("mData", Math.min(percent+10,100));
+setMeter("mEvidence", Math.min(percent,100));
+
+document.getElementById("tUnderstand").innerText = percent;
+document.getElementById("tApply").innerText = percent+5;
+document.getElementById("tAnalyze").innerText = percent-5;
+document.getElementById("tData").innerText = percent+10;
+document.getElementById("tEvidence").innerText = percent;
+
+document.getElementById("nextStep").innerText =
+percent<60 ? "Келесі қадам: теорияны қайталау." :
+percent<85 ? "Келесі қадам: күрделі scenario орындау." :
+"Сен терең деңгейдесің. Data-ға негізделген жоба жаса.";
+
+// бейдждер
+let badgesHTML = "";
+if(L3>=3) badgesHTML += `<div class="badge">🏆 Терең талдаушы</div>`;
+if(percent>=80) badgesHTML += `<div class="badge">🔥 Жоғары нәтиже</div>`;
+if(myResults.length>=5) badgesHTML += `<div class="badge">📚 Белсенді оқушы</div>`;
+
+if(!badgesHTML) badgesHTML = `<div class="muted">Бейдж жоқ</div>`;
+
+document.getElementById("badges").innerHTML = badgesHTML;
+
+// соңғы нәтиже
+const last = myResults[0];
+document.getElementById("lastSummary").innerHTML =
+`Тақырып: ${last.topicTitle||last.topic}<br>
+Балл: ${last.score}/${last.max}<br>
+Деңгей: ${last.level}<br>
+Күні: ${new Date(last.at).toLocaleString()}`;
+
+})();
+</script>
+
 </body>
 </html>
