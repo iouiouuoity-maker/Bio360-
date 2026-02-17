@@ -2,24 +2,22 @@
 <html lang="kk">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Bio360 • Сабақ</title>
   <link rel="stylesheet" href="assets/style.css"/>
 </head>
 <body>
-
 <header class="topbar">
   <div class="wrap bar">
     <div class="brand">
       <div class="logo">B360</div>
       <div>
-        <h1>Bio360</h1>
-        <p class="sub">AI + Scenario + Data моделі</p>
+        <h1 id="title">Сабақ</h1>
+        <p class="sub" id="meta">—</p>
       </div>
     </div>
     <nav class="nav">
-      <a class="pill" href="index.html">Басты бет</a>
-      <a class="pill" href="passport.html">BioPassport</a>
+      <a class="pill" href="topics.html">Тақырыптар</a>
       <a class="pill" href="teacher.html">Мұғалім</a>
     </nav>
   </div>
@@ -27,112 +25,88 @@
 
 <main class="wrap">
 
-<!-- ===================== 1. Диагностика ===================== -->
-<section class="panel">
-  <div class="panel-head">
-    <div>
-      <h2>1. Диагностика</h2>
-      <p class="muted">
-        Қысқа тест арқылы сенің бастапқы деңгейің анықталады.
-      </p>
+  <section class="panel">
+    <h2>Теория</h2>
+    <div id="theory" class="card"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Тест</h2>
+    <div id="quiz" class="quiz"></div>
+    <div class="row">
+      <button id="gradeBtn" class="btn">Бағалау</button>
+      <div id="gradeOut" class="badge">—</div>
     </div>
-  </div>
+  </section>
 
-  <div id="quizBox" class="quiz"></div>
+  <section class="panel">
+    <h2>Қысқа жауап</h2>
+    <p class="muted">2–4 сөйлеммен дәлелдеп жаз.</p>
 
-  <div class="row">
-    <button id="gradeBtn" class="btn">Бағалау</button>
-    <div id="quizResult" class="result"></div>
-  </div>
-</section>
+    <label class="lbl">1) Нені түсіндің?</label>
+    <textarea id="a1" class="textarea" placeholder="..."></textarea>
 
-<!-- ===================== 2. Decision Story ===================== -->
-<section class="panel">
-  <div class="panel-head">
-    <div>
-      <h2>2. Decision Story</h2>
-      <p class="muted">
-        Шешім қабылда және оның ғылыми салдарын көр.
-      </p>
+    <label class="lbl">2) Дәлел / мысал келтір</label>
+    <textarea id="a2" class="textarea" placeholder="..."></textarea>
+
+    <div class="row">
+      <button id="saveBtn" class="btn">Жіберу / Сақтау</button>
+      <div id="saveOut" class="muted"></div>
     </div>
-  </div>
+  </section>
 
-  <div id="scenarioBox" class="card"></div>
+  <section class="panel">
+    <h2>AI-көмекші</h2>
+    <p class="muted">Тақырып бойынша нақты сұрақ қой.</p>
 
-  <label class="lbl">Ғылыми жауап:</label>
-  <textarea id="scenarioAnswer" class="textarea"
-    placeholder="Себебі..., дәлел..., қорытынды..."></textarea>
-</section>
-
-<!-- ===================== 3. Data талдау ===================== -->
-<section class="panel">
-  <div class="panel-head">
-    <div>
-      <h2>3. Data талдау</h2>
-      <p class="muted">
-        Кестені және графикті талдап, ғылыми қорытынды жаса.
-      </p>
-    </div>
-  </div>
-
-  <div id="dataTable" class="tableWrap"></div>
-
-  <canvas id="chart" width="700" height="320" class="canvas"></canvas>
-
-  <label class="lbl">1. Дерек нені көрсетеді?</label>
-  <textarea id="dataQ1" class="textarea"></textarea>
-
-  <label class="lbl">2. Қандай шешім ұсынасың?</label>
-  <textarea id="dataQ2" class="textarea"></textarea>
-</section>
-
-<!-- ===================== 4. Нәтиже ===================== -->
-<section class="panel">
-  <div class="panel-head">
-    <div>
-      <h2>4. Нәтижені сақтау</h2>
-      <p class="muted">
-        Барлық бөлімдерді толтырған соң нәтижені сақта.
-      </p>
-    </div>
-  </div>
-
-  <button id="saveBtn" class="btn">Сақтау</button>
-  <div id="saveResult" class="result"></div>
-</section>
-
-<!-- ===================== AI КӨМЕКШІ ===================== -->
-<section class="panel">
-  <div class="panel-head">
-    <div>
-      <h2>AI-көмекші</h2>
-      <p class="muted">
-        Тақырып бойынша сұрақ қой: «Осмос қалай жүреді?», 
-        «Плазмолиз деген не?», 
-        «Мембрана қызметін түсіндір».
-      </p>
-    </div>
-  </div>
-
-  <div class="card" style="margin-top:15px;">
-    <div class="elfsight-app-212fcadb-97f4-4859-94f9-2b13d10252e3"></div>
-  </div>
-</section>
+    <!-- Elfsight AI Chatbot -->
+    <script src="https://elfsightcdn.com/platform.js" async></script>
+    <div class="elfsight-app-212fcadb-97f4-4859-94f9-2b13d10252e3" data-elfsight-app-lazy></div>
+  </section>
 
 </main>
 
-<footer class="footer">
-  <div class="wrap foot">
-    <span>Bio360</span>
-    <span class="muted">Оқушы панелі</span>
-  </div>
-</footer>
-
-<!-- Негізгі логика -->
 <script src="assets/app.js"></script>
+<script>
+  const sess = Bio360.getSession();
+  const topicId = Bio360.getActiveTopic();
+  if(!sess || !topicId){ alert("Тақырып таңдалмаған."); location.href="topics.html"; }
 
-<!-- Elfsight платформа -->
-<script src="https://elfsightcdn.com/platform.js"></script>
+  const t = Bio360.getTopic(topicId);
 
+  document.getElementById("title").textContent = t.title;
+  document.getElementById("meta").textContent  = `${sess.name} • ${sess.cls}-сынып • ${t.id}`;
+  document.getElementById("theory").innerHTML  = Bio360.formatTheory(t.theory);
+
+  Bio360.renderQuiz("quiz", topicId);
+
+  let last = null;
+
+  document.getElementById("gradeBtn").addEventListener("click", ()=>{
+    last = Bio360.gradeQuiz(topicId);
+    document.getElementById("gradeOut").textContent = `Балл: ${last.score}/${last.max} • ${last.level}`;
+  });
+
+  document.getElementById("saveBtn").addEventListener("click", ()=>{
+    if(!last){ alert("Алдымен 'Бағалау' бас."); return; }
+
+    const a1 = document.getElementById("a1").value.trim();
+    const a2 = document.getElementById("a2").value.trim();
+    if(!a1 || !a2){ alert("Екі жауапты да толтыр."); return; }
+
+    Bio360.saveResult({
+      name: sess.name,
+      cls: sess.cls,
+      topic: topicId,
+      topicTitle: t.title,
+      score: last.score,
+      max: last.max,
+      level: last.level,
+      a1, a2
+    });
+
+    document.getElementById("saveOut").innerHTML = `✅ Сақталды. Мұғалім панелінде көрінеді.`;
+  });
+</script>
 </body>
 </html>
